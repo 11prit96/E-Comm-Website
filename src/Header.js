@@ -3,7 +3,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -16,10 +15,26 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import FavoriteBorderSharpIcon from "@mui/icons-material/FavoriteBorderSharp";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 import { Link } from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import { ItemList } from "./Context";
+import TextField from "@mui/material/TextField";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
+
 const Header = (props) => {
+  const { cart } = ItemList();
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -29,7 +44,7 @@ const Header = (props) => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Link to="/" style={{ textDecoration: 'none', color: "#000" }}>
+      <Link to="/" style={{ textDecoration: "none", color: "#000" }}>
         <Typography variant="h6" sx={{ my: 2 }}>
           eComm Website
         </Typography>
@@ -61,9 +76,6 @@ const Header = (props) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  // <Box sx={{ display: "flex" }}>
-  // <CssBaseline />
-
   return (
     <React.Fragment>
       <AppBar component="nav">
@@ -77,7 +89,7 @@ const Header = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          
+
           <Typography
             variant="h6"
             component="div"
@@ -87,15 +99,33 @@ const Header = (props) => {
               textAlign: "center",
             }}
           >
-            <Link to="/" style={{ textDecoration: 'none', color: "#fff" }}>
-            eComm Website
+            <Link to="/" style={{ textDecoration: "none", color: "#fff", width: 300 }}>
+              eComm Website
             </Link>
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <SearchIcon sx={{ mr: 5 }} />
-            <FavoriteBorderSharpIcon sx={{ mr: 5 }} />
-            <ShoppingCartSharpIcon sx={{ mr: 5 }} />
-            <AccountCircleSharpIcon sx={{ mr: 10 }} />
+              <TextField
+                id="outlined-search"
+                label="Search field"
+                type="search"
+                size="small"
+              />
+              <IconButton sx={{ width: 50, marginRight: 3 }}>
+              <SearchIcon />
+            </IconButton>
+            <IconButton  sx={{ width: 50, marginInline: 3 }}>
+              <FavoriteBorderSharpIcon />
+            </IconButton>
+            <IconButton aria-label="cart" sx={{ width: 50, marginInline: 3 }}>
+              <StyledBadge badgeContent={cart.length} color="secondary">
+                <NavLink to="/cart">
+                  <ShoppingCartSharpIcon />
+                </NavLink>
+              </StyledBadge>
+            </IconButton>
+            <IconButton  sx={{ width: 50, marginInline: 3  }}>
+              <AccountCircleSharpIcon />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>

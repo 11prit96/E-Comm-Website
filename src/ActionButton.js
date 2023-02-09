@@ -1,22 +1,25 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import Button from "@mui/material/Button";
+import { ItemList } from "./Context";
 
-const ActionButton = () => {
-  const [toAdd, setToAdd] = useState(true);
-
-  function toggle() {
-    setToAdd((val) => !val);
-  }
-
+const ActionButton = ({ prod }) => {
+  const { cart, addItem } = ItemList()
+  
   return (
     <Fragment>
-      {toAdd ? (
-        <Button variant="contained" color="success" onClick={toggle}>
-          Add to Cart
-        </Button>
+      {cart.some((p) => p.id === prod.id) ? (
+        <Button variant="contained" disabled>
+        Added to Cart
+      </Button>
       ) : (
-        <Button variant="outlined" color="error" onClick={toggle}>
-          Remove
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => {
+            addItem(prod)
+          }}
+        >
+          Add to Cart
         </Button>
       )}
     </Fragment>
